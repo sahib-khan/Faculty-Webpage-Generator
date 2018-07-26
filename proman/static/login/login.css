@@ -1,0 +1,15 @@
+header {
+padding: 0.5em;
+color: white;
+background-color: #6666ff;
+text-align: center;
+}
+nav {
+<!--padding-top: 5px;-->
+<!--padding-bottom: 7px;-->
+<!--padding-left: 5px;-->
+color white;
+background-color: #33ccff;
+height: 45px;
+text-align : center;
+}

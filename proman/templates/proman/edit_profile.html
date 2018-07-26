@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+
+ <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Edit Page</title>
+
+    <!-- Bootstrap core CSS -->
+    {% load static %}
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+    {% load static %}
+    <link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    {% load static %}
+    <link href="{% static 'vendor/devicons/css/devicons.min.css' %}" rel="stylesheet">
+    {% load static %}
+    <link href="{% static 'vendor/simple-line-icons/css/simple-line-icons.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    {% load static %}
+    <link href="{% static 'css/resume.min.css' %}" rel="stylesheet">
+
+  </head>
+
+  <body id="page-top">
+
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="sideNav" style="background-color:#000066;">
+      <a class="navbar-brand js-scroll-trigger" href="#page-top">
+        <span class="d-block d-lg-none">Edit Profile</span>
+        <!-- <span class="d-none d-lg-block">
+          <img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="img/profile.jpg" alt="">
+        </span>
+ -->      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#AddProPic">Edit Personal Details</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#course">Edit Teaching Details</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#education">Add Education</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#exp">Add work Experience</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#resInt">Interests</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#project">Add Projects</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#pub">Add Publications/Books</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#studs">Add Students</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#awards">Awards</a>
+          </li>
+            <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="{%url 'view_profile' %}">View Profile</a>
+          </li>
+            <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="{% url 'update' %}">Update</a>
+          </li>
+            <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="{% url 'logout' %}">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container-fluid p-0">
+
+      <section class="resume-section p-3 p-lg-5 d-flex d-column" id="AddProPic">
+        <div class="my-auto">
+          <h2 class="mb-0">
+          	Change Profile Pic:
+          </h2>
+          <form class="form-horizontal" action="{% url 'upload_pic' %}" method="post" enctype="multipart/form-data">
+               {% csrf_token %}
+            <div class="form-group ">
+            <label class="control-label" for="id_image">Upload Image:</label>
+                <input id="id_image" class="form-control " type="file" class="" name="image"><br>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </div>
+          </form>
+          <h2 class="mb-0">
+    	    Edit Details:
+          </h2>
+          <form class="form-horizontal"  method="POST" action="{% url 'edit_profile' %}">{% csrf_token %}
+            <div class="form-group">
+                <label class="control-label " for="title">Title:</label>
+                    <input type="text" class="form-control " id="title" placeholder="Pr./Dr." name="title" value="{{user.userprofile.title}}" >
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="fname">First Name:</label>
+                    <input type="text" class="form-control" id="fname" placeholder="First Name" name="fname" value="{{user.userprofile.fname}}" >
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="mname">Middle Name:</label>
+                    <input type="text" class="form-control" id="mname" placeholder="Middle Name" name="mname" value="{{user.userprofile.mname}}" >
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="lname">Last Name:</label>
+                    <input type="text" class="form-control" id="lname" placeholder="Last Name" name="lname" value="{{user.userprofile.lname}}" >
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" placeholder="Email" name="email" value="{{user.userprofile.email}}" >
+            </div>
+            <div class="form-group">
+              <label class="control-label" for="id_dep">Department:</label>
+              <select class="form-control" id="id_dep" name="dep" required>
+              {% if user.userprofile.dep != "" %}
+                <option value="{{ user.userprofile.dep.id }}" selected="selected" >{{ user.userprofile.dep.dep_name }}</option>
+              {% else %}
+                   <option value= selected="selected" >Select Department</option>
+              {% endif %}
+              {% for each_dep in dep_list %}
+                <option value="{{each_dep.id}}">{{each_dep.dep_name}}</option>
+              {% endfor %}
+              </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="desig">Designation: </label>
+                    <input type="text" class="form-control" id="desig" placeholder="Designation" name="desig" value="{{user.userprofile.desig}}" >
+            </div>
+            <div class="form-group">
+               <label class="control-label " for="id_descrip">Description:</label>
+                     <textarea class="form-control" name="descrip" rows="5"  id="id_descrip">{{ user.userprofile.descrip }}</textarea>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="office">Office: </label>
+                    <input type="text" class="form-control" id="office" placeholder="Office No." name="office" value="{{user.userprofile.office}}" >
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="phn_no">Phone No.: </label>
+                    <input type="number" class="form-control" id="phn_no" placeholder="Must contain numbers only" name="phn_no" value="{{user.userprofile.phn_no}}" >
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="resid">Residence: </label>
+                    <input type="text" class="form-control" id="resid" placeholder="Residence" name="resid" value="{{user.userprofile.resid}}" >
+            </div>
+            <div class="form-group">
+                    <button type="submit" class="btn btn-default">Submit</button>
+            </div>
+          </form>
+        </div>
+      </section>
+      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="course">
+        <div class="my-auto">
+          <h2 class="mb-0">Add Course:</h2>
+          <form class="form-horizontal"  method="POST" action="{% url 'add_course' %}">{% csrf_token %}
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="startYear">Start Year:</label>
+            <div class="col-sm-4">
+                <input type="number" class="form-control" id="startYear" placeholder="Start Year" name="startYear" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="endYear">End Year:</label>
+            <div class="col-sm-4">
+                <input type="number" class="form-control" id="endYear" placeholder="End Year" name="endYear" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="semester">Semester:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="semester" placeholder="Odd/Even" name="semester" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="name">Name of course:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="name" placeholder="" name="name" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="course_code">Code:</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="course_code" placeholder="" name="course_code" required>
+          </div>
+        </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Submit</button>
+            </div>
+          </div>
+          </form>
+        </div>
+      <div class="my-auto">
+          <h2 class="mb-0">Delete Course:</h2>
+          <form class="form-horizontal"  method="POST" action="{% url 'del_course' %}">{% csrf_token %}
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="del_course">Courses :</label>
+             <div class="col-sm-4">
+              <select class="form-control" id="del_course" name="del_course" required>
+                <option value selected="selected" >Select Course</option>
+              {% for each in user.userprofile.course_set.all %}
+              <option value="{{each.id}}">{{each}}</option>
+              {% endfor %}
+              </select>
+             </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Delete</button>
+            </div>
+          </div>
+          </form>
+
+      </div>
+       </section>
+      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="education">
+        <div class="my-auto">
+          <h2 class="mb-0">Add Education:</h2>
+          <form class="form-horizontal"  method="POST" action="{% url 'add_edu' %}">{% csrf_token %}
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="startTime">Start Time:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="startTime" placeholder="" name="startTime" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="endTime">End Time:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="endTime" placeholder="" name="endTime" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="college">College:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="college" placeholder="" name="college" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="degree">Degree:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="degree" placeholder="" name="degree" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2 " for="descrip">Description:</label>
+                 <div class="col-sm-4">
+                     <textarea class="form-control" name="descrip" rows="5" id="descrip"></textarea>
+                 </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </div>
+            </div>
+          </form>
+        </div>
+          <div class="my-auto">
+          <h2 class="mb-0">Delete Education:</h2>
+          <form class="form-horizontal"  method="POST" action="{% url 'del_edu' %}">{% csrf_token %}
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="del_edu">Education :</label>
+             <div class="col-sm-4">
+              <select class="form-control" id="del_edu" name="del_edu" required>
+                <option value selected="selected" >Select Education</option>
+              {% for each in user.userprofile.edu_set.all %}
+              <option value="{{each.id}}">{{each}}</option>
+              {% endfor %}
+              </select>
+             </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Delete</button>
+            </div>
+          </div>
+          </form>
+
+      </div>
+      </section>
+      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="exp">
+          <div class="my-auto">
+          <h2 class="mb-0">Add Work Experience:</h2>
+          <form class="form-horizontal"  method="POST" action="{% url 'add_exp' %}">{% csrf_token %}
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="startTime2">Start Time:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="startTime2" placeholder="" name="startTime" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="endTime2">End Time:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="endTime2" placeholder="" name="endTime" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="desig2">Designation:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="desig2" placeholder="Worked as" name="desig" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="firm">Workplace:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="firm" placeholder="Add workplace" name="firm" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2 " for="descrip2">Description:</label>
+                 <div class="col-sm-4">
+                     <textarea class="form-control" name="descrip" rows="5" id="descrip2"></textarea>
+                 </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </div>
+            </div>
+          </form>
+        </div>
+          <div class="my-auto">
+          <h2 class="mb-0">Delete Experience Record:</h2>
+          <form class="form-horizontal"  method="POST" action="{% url 'del_exp' %}">{% csrf_token %}
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="del_exp">Experience Records :</label>
+             <div class="col-sm-4">
+              <select class="form-control" id="del_exp" name="del_exp" required>
+                <option value selected="selected" >Select Experience</option>
+              {% for each in user.userprofile.workexp_set.all %}
+              <option value="{{each.id}}">{{each}}</option>
+              {% endfor %}
+              </select>
+             </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Delete</button>
+            </div>
+          </div>
+          </form>
+
+      </div>
+      </section>
+      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="resInt">
+          <div class="my-auto">
+          <h2 class="mb-0">Add Your Research Interests:</h2>
+          <form class="form-horizontal"  method="POST" action="{% url 'add_Int' %}">{% csrf_token %}
+            <div class="form-group">
+                <label class="control-label col-sm-2 " for="descrip3">Description:</label>
+                 <div class="col-sm-4">
+                     <textarea class="form-control" name="descrip"  rows="15" id="descrip3" placeholder="Give Some Description..."></textarea>
+                 </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </div>
+            </div>
+          </form>
+        </div>
+          <div class="my-auto">
+          <h2 class="mb-0">Delete Research Record:</h2>
+          <form class="form-horizontal"  method="POST" action="{% url 'del_int' %}">{% csrf_token %}
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="del_int">Research Interests Records: </label>
+             <div class="col-sm-4">
+              <select class="form-control" id="del_int" name="del_int" required>
+                <option value selected="selected" >Select Record</option>
+              {% for each in user.userprofile.resint_set.all %}
+              <option value="{{each.id}}">{{each}}</option>
+              {% endfor %}
+              </select>
+             </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Delete</button>
+            </div>
+          </div>
+          </form>
+
+      </div>
+
+</section>
+      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="project">
+        <div class="my-auto">
+          <h2 class="mb-0">Add Projects:</h2>
+          <form class="form-horizontal"  method="POST" action="{% url 'add_pro' %}">{% csrf_token %}
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="title2">Project Title:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="title2" placeholder="" name="title" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="fa">Funding Agency:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="fa" placeholder="" name="FundingAgency" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="pi">PI:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="pi" placeholder="" name="PI" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="syear">Start Year:</label>
+                <div class="col-sm-4">
+                    <input type="number" class="form-control" id="syear" placeholder="" name="syear" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="fyear">Completion Year:</label>
+                <div class="col-sm-4">
+                    <input type="number" class="form-control" id="fyear" placeholder="" name="fyear" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </div>
+            </div>
+          </form>
+        </div>
+         <div class="my-auto">
+          <h2 class="mb-0">Delete Project Record:</h2>
+          <form class="form-horizontal"  method="POST" action="{% url 'del_pro' %}">{% csrf_token %}
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="del_pro">Project Records: </label>
+             <div class="col-sm-4">
+              <select class="form-control" id="del_pro" name="del_pro" required>
+                <option value selected="selected" >Select Record</option>
+              {% for each in user.userprofile.project_set.all %}
+              <option value="{{each.id}}">{{each}}</option>
+              {% endfor %}
+              </select>
+             </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Delete</button>
+            </div>
+          </div>
+          </form>
+
+      </div>
+      </section>
+      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="pub">
+          <div class="my-auto">
+          <h2 class="mb-0">Add Publications:</h2>
+          <form class="form-horizontal"  method="POST" action="{% url 'add_pub' %}">{% csrf_token %}
+            <div class="form-group">
+                <label class="control-label col-sm-2 " for="descrip4">Description:</label>
+                 <div class="col-sm-4">
+                     <textarea class="form-control" name="descrip"  rows="5" id="descrip4" placeholder="Give Some Description..."></textarea>
+                 </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </div>
+            </div>
+          </form>
+        </div>
+          <div class="my-auto">
+          <h2 class="mb-0">Delete Publication:</h2>
+          <form class="form-horizontal"  method="POST" action="{% url 'del_pub' %}">{% csrf_token %}
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="del_pub">Publications: </label>
+             <div class="col-sm-4">
+              <select class="form-control" id="del_pub" name="del_pub" required>
+                <option value selected="selected" >Select Record</option>
+              {% for each in user.userprofile.publication_set.all %}
+              <option value="{{each.id}}">{{each}}</option>
+              {% endfor %}
+              </select>
+             </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Delete</button>
+            </div>
+          </div>
+          </form>
+
+      </div>
+        <div class="my-auto">
+          <h2 class="mb-0">Add Books:</h2>
+          <form class="form-horizontal"  method="POST" action="{% url 'add_book' %}">{% csrf_token %}
+            <div class="form-group">
+                <label class="control-label col-sm-2 " for="descrip5">Description:</label>
+                 <div class="col-sm-4">
+                     <textarea class="form-control" name="descrip"  rows="5" id="descrip5" placeholder="Give Some Description..."></textarea>
+                 </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </div>
+            </div>
+          </form>
+        </div>
+          <div class="my-auto">
+          <h2 class="mb-0">Delete Book:</h2>
+          <form class="form-horizontal"  method="POST" action="{% url 'del_book' %}">{% csrf_token %}
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="del_book">Book Records: </label>
+             <div class="col-sm-4">
+              <select class="form-control" id="del_book" name="del_book" required>
+                <option value selected="selected" >Select Record</option>
+              {% for each in user.userprofile.book_set.all %}
+              <option value="{{each.id}}">{{each}}</option>
+              {% endfor %}
+              </select>
+             </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Delete</button>
+            </div>
+          </div>
+          </form>
+
+      </div>
+      </section>
+      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="studs">
+        <div class="my-auto">
+          <h2 class="mb-0">Add Continuing Students:</h2>
+          <form class="form-horizontal"  method="POST" action="{% url 'add_cons' %}">{% csrf_token %}
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="name3">Name of Student:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="name3" placeholder="" name="name" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="degree3">Degree:</label>
+                 <div class="col-sm-4">
+                  <select class="form-control" id="degree3" name="degree" required>
+                    <option value selected="selected" >Select Degree</option>
+                    <option value="1">Ph.D.</option>
+                    <option value="3">M.Tech.</option>
+                    <option value="2">B.Tech</option>
+                  </select>
+                 </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </div>
+            </div>
+          </form>
+        </div>
+        <div class="my-auto">
+          <h2 class="mb-0">Delete Continuing Student Record:</h2>
+          <form class="form-horizontal"  method="POST" action="{% url 'del_cons' %}">{% csrf_token %}
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="del_cons">Student Records: </label>
+             <div class="col-sm-4">
+              <select class="form-control" id="del_cons" name="del_cons" required>
+                <option value selected="selected" >Select Record</option>
+              {% for each in user.userprofile.continuingstudent_set.all %}
+              <option value="{{each.id}}">{{each}}</option>
+              {% endfor %}
+              </select>
+             </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Delete</button>
+            </div>
+          </div>
+          </form>
+
+      </div>
+        <div class="my-auto">
+          <h2 class="mb-0">Add Completed Students:</h2>
+          <form class="form-horizontal"  method="POST" action="{% url 'add_coms' %}">{% csrf_token %}
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="name4">Name of Student:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="name4" placeholder="" name="name" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="sv">Supervisor:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="sv" placeholder="" name="supervisor" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="tt">Thesis Title:</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="tt" placeholder="" name="thesisTitle" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="degree4">Degree:</label>
+                 <div class="col-sm-4">
+                  <select class="form-control" id="degree4" name="degree" required>
+                    <option value selected="selected" >Select Degree</option>
+                    <option value="1">Ph.D.</option>
+                    <option value="3">M.Tech.</option>
+                    <option value="2">B.Tech</option>
+                  </select>
+                 </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </div>
+            </div>
+          </form>
+        </div>
+          <div class="my-auto">
+          <h2 class="mb-0">Delete Completed Student Record:</h2>
+          <form class="form-horizontal"  method="POST" action="{% url 'del_coms' %}">{% csrf_token %}
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="del_coms">Student Records: </label>
+             <div class="col-sm-4">
+              <select class="form-control" id="del_coms" name="del_coms" required>
+                <option value selected="selected" >Select Record</option>
+              {% for each in user.userprofile.completedstudent_set.all %}
+              <option value="{{each.id}}">{{each}}</option>
+              {% endfor %}
+              </select>
+             </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Delete</button>
+            </div>
+          </div>
+          </form>
+
+      </div>
+      </section>
+      <section class="resume-section p-3 p-lg-5 d-flex flex-column" id="awards">
+          <div class="my-auto">
+          <h2 class="mb-0">Add Awards/Recognitions:</h2>
+          <form class="form-horizontal"  method="POST" action="{% url 'add_awd' %}">{% csrf_token %}
+            <div class="form-group">
+                <label class="control-label col-sm-2 " for="descrip6">Description:</label>
+                 <div class="col-sm-4">
+                    <input type="text" class="form-control" id="descrip6" placeholder="" name="descrip" required>
+                 </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </div>
+            </div>
+          </form>
+        </div>
+          <div class="my-auto">
+          <h2 class="mb-0">Delete Award Record:</h2>
+          <form class="form-horizontal"  method="POST" action="{% url 'del_awd' %}">{% csrf_token %}
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="del_awd">Awards: </label>
+             <div class="col-sm-4">
+              <select class="form-control" id="del_awd" name="del_awd" required>
+                <option value selected="selected" >Select Record</option>
+              {% for each in user.userprofile.award_set.all %}
+              <option value="{{each.id}}">{{each}}</option>
+              {% endfor %}
+              </select>
+             </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Delete</button>
+            </div>
+          </div>
+          </form>
+
+      </div>
+</section>
+
+        {% load static %}
+        <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+        {% load static %}
+        <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        {% load static %}
+        <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+        {% load static %}
+        <script src="{% static 'js/resume.min.js' %}"></script>
+    </div>
+  </body>
+
+</html>

@@ -1,0 +1,2 @@
+You are promoted to HOD
+Your publication has been accepted : "Biswajit Bhowmik, Santosh Biswas, Jatindra Kumar Deka, "When Clustering Shows Optimality Towards Analyzing Stuck-at Faults in Channels of on-Chip Networks ", The 18th IEEE International Conference on High Performance Computing and Communications (HPCC 2016), Sydney, Australia, 12-14, December, 2016"

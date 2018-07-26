@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Login / Signup</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'style.css'  %}">
+<style>
+        header {
+        height: 90px;
+        padding: 0.5em;
+        color: white;
+        background-color: #006699;
+        text-align: center;
+        }
+</style>
+ <script src="https://www.google.com/recaptcha/api.js?onload=myCallBack&render=explicit" async defer></script>
+    <script>
+      var recaptcha1;
+      var recaptcha2;
+      var myCallBack = function() {
+        //Render the recaptcha1 on the element with ID "recaptcha1"
+        recaptcha1 = grecaptcha.render('recaptcha1', {
+          'sitekey' : '6LezZzkUAAAAAJL0gzA3mx7kHXGjojx4zaGwnDm-', //Replace this with your Site key
+        });
+
+        //Render the recaptcha2 on the element with ID "recaptcha2"
+        recaptcha2 = grecaptcha.render('recaptcha2', {
+          'sitekey' : '6LezZzkUAAAAAJL0gzA3mx7kHXGjojx4zaGwnDm-', //Replace this with your Site key
+
+        });
+      };
+    </script>
+
+</head>
+
+<body>
+<header>
+    {% load static %}
+    <img src="{% static 'login/iitg.png' %}" height="75px" align="left" >
+    <h1 style="font-size:200%;margin-top:20px;">Indian Institute of Technology, Guwahati</h1>
+</header>
+<br><br>
+  <a style="position: inherit;
+  padding: 20px 40px;
+  background: #616fa5;
+  color: #fff;
+  -webkit-transition: all .3s;
+  transition: all .3s;" href="{% url 'index'%}">Go back to Home</a>
+<div class="panel">
+  <ul class="panel__menu" id="menu">
+    <hr/>
+    <li id="signIn"> <a href="#">Login</a></li>
+    <li id="signUp"><a href="#">Sign up</a></li>
+  </ul>
+  <div class="panel__wrap">
+
+      <!--<div >-->
+       <div class="panel__box active" id="signInBox" style="width: 350px !important;height: 300px !important;">
+           <div style="height:280px !important;">
+     <form action="/proman/login/" method="POST">{% csrf_token %}{{ form.errors }}
+      <label style="margin-bottom:10px">Username
+        <input type="email" placeholder="Username" name="username" required />
+      </label >
+      <label style="margin-bottom:10px">Password
+        <input type="password" placeholder="Password" name="password"required />
+      </label>
+
+        <div id="recaptcha1"></div>
+
+      <input type="submit" value="Login"  style="margin-top:90px !important;">
+     </form>
+           </div></div>
+    <div class="panel__box" id="signUpBox" style="width: 350px !important;height: 360px !important;">
+        <form action="/proman/register/" method="POST">{% csrf_token %}
+        {{ form_sig.errors }}
+      <label style="margin-bottom:10px">Username
+        <input type="email" placeholder="Webmail ID" name="username" required />
+      </label >
+      <label style="margin-bottom:10px">Password
+        <input type="password" placeholder="Create Password" name="password1" required/>
+      </label>
+      <label style="margin-bottom:10px">Confirm password
+        <input type="password" placeholder="Confirm Password" name="password2" required />
+      </label>
+
+        <div id="recaptcha2"></div>
+      <input type="submit" value="Sign Up"   style="margin-top:90px !important;">
+    </form>
+    </div>
+    </div>
+  </div>
+
+    {% load staticfiles %}
+    <script  src="{% static 'index.js' %}"></script>
+
+</body>
+</html>
