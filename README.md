@@ -1,7 +1,6 @@
-# Profile Manager
+# Faculty Webpage Generator
 
-An intranet portal where faculties can manage and publish their profiles and
-students can view their profiles.
+A portal for institute faculties to create and edit their webpages on institute intranet website.
 
 ## Getting Started
 
